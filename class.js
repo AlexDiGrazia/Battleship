@@ -40,12 +40,16 @@ class Ship {
   path(ship) {
     if (ship.direction === 0) {
       ship.horizontalShip(ship);
+      ship.noOverlap(ship);
+      ship.splice(ship);
     } else if (ship.direction === 1) {
       ship.verticalShip(ship);
+      ship.noOverlap(ship);
+      ship.splice(ship);
     }
   }  
 
-  randomNumber(shipCoorD) {
+  randomNumber(shipCoord) {
     shipCoord.xCoord = Math.floor(Math.random() * 10);
     shipCoord.yCoord = Math.floor(Math.random() * 10);
   }
@@ -80,13 +84,13 @@ class Ship {
   }
   
   noOverlap(ship) {
-    if (!ship.includes(null) && ship != []) {
+    if (!ship.array.includes(null) && ship != []) {
       return ship;
     } else {
       ship.length = 0;
-      ship.randomNumber(shipCoord);
-      path(ship);
-      noOverlap(ship);
+      ship.randomNumber(ship);
+      ship.path(ship);
+      // noOverlap(ship);
     }
   }
 
@@ -128,7 +132,7 @@ shipArray.forEach((element) => element.path(element));
 
 console.clear();
 
-console.log(shipArray);
+// console.log(shipArray);
 
 console.table(grid);
 
