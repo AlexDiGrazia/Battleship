@@ -39,15 +39,48 @@ class Ship {
 
   path(ship) {
     if (ship.direction === 0) {
-        console.log('horizontal');
+      console.log('horizontal');
+      ship.horizontalShip(ship);
     } else if (ship.direction === 1) {
-      console.log('vertical')
+      console.log('vertical');
+      ship.verticalShip(ship);
     }
   }  
 
   randomNumber(shipCoord) {
     shipCoord.xCoord = Math.floor(Math.random() * 10);
     shipCoord.yCoord = Math.floor(Math.random() * 10);
+  }
+
+  horizontalShip(ship) {
+    for(i = 0; i < ship.length; i++) {
+      if (ship.xCoord > ship.length) {
+        const selectShipCoordinates = () => grid[ship.yCoord][ship.xCoord - i];
+        const shipCoordinate = selectShipCoordinates();
+        ship.array.push(shipCoordinate);
+        // grid[ship.yCoord].splice((ship.xCoord - i), 1, null);
+      } else {
+          const selectShip = () => grid[ship.yCoord][ship.xCoord + i];
+          const someShipCoord = selectShip();
+          ship.array.push(someShipCoord);
+          // grid[ship.yCoord].splice((ship.xCoord + i), 1, null);
+      }
+    }
+  }
+
+  verticalShip(ship) {
+    for(i = 0; i < ship.length; i++) {
+      if(ship.yCoord <= ship.length) {
+        const makeShip = () => grid[ship.yCoord + i][ship.xCoord];
+        const newShip = makeShip();
+        ship.array.push(newShip);
+      } else {
+        const makeShip = () => grid[ship.yCoord - i][ship.xCoord];
+        const newShip = makeShip();
+        ship.array.push(newShip);
+      }
+    }
+    return ship.yCoord;
   }
 }
 
@@ -62,11 +95,11 @@ shipArray = [carrierShip, cruiser, battleShip, destroyer, tacticalShip];
 
 shipArray.forEach((ship) => ship.shipDirection(ship));
 shipArray.forEach((element) => element.randomNumber(element));
-shipArray.forEach((element) => element.path(element))
+shipArray.forEach((element) => element.path(element));
+// shipArray.forEach((element) => element.horizontalShip(element));
+// shipArray.forEach((element) => element.verticalShip(element));
 
-
-
-
+console.clear();
 
 console.log(shipArray);
 
@@ -77,23 +110,6 @@ console.log(shipArray);
 
 
 
-function horizontalShip(length) {
-
-
-  for(i = 0; i < length; i++) {
-    if (ship.yCoord > ship.length) {
-      const selectShipCoordinates = () => grid[ship.yCoord][ship.xCoord - i];
-      const shipCoordinate = selectShipCoordinates();
-      ship5.push(shipCoordinate);
-      shipRow.splice((shipIndex - i), 1, null);
-    } else {
-        const selectShip = () => shipRow[shipIndex + i];
-        const ship = selectShip();
-        ship5.push(ship);
-        shipRow.splice((shipIndex + i), 1, null);
-    }
-  }
-}
 
 
 
@@ -104,20 +120,8 @@ function horizontalShip(length) {
 
 
 
-// verticalShip(vertAxisNumber, longAxis) {
-//   for(i = 0; i < 5; i++) {
-//     if(vertAxisNumber <= 5) {
-//       const makeShip = () => grid[vertAxisNumber + i][longAxis];
-//       const newShip = makeShip();
-//       this.array.push(newShip);
-//     } else {
-//       const makeShip = () => grid[vertAxisNumber - i][longAxis];
-//       const newShip = makeShip();
-//       this.array.push(newShip);
-//     }
-//   }
-//   return vertAxisNumber;
-// }
+
+
 
 
 console.table(grid);
