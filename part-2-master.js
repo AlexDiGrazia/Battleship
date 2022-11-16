@@ -126,3 +126,4 @@ console.clear();
 
 // console.log(shipArray);
 console.table(grid);
+
