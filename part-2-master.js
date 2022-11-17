@@ -77,10 +77,8 @@ function battleship() {
     noOverlap(ship) {
       ship.makeShip(ship);
       if (!ship.array.includes(null) && ship.array != []) {
-        // console.log('yes');
         return ship;
       } else {
-        // console.log('TRY AGAIN!!!!!');
         ship.array = [];
         ship.randomNumber(ship);
         ship.noOverlap(ship);
