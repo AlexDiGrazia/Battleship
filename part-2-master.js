@@ -3,7 +3,7 @@ var readlineSync = require("readline-sync");
 function battleship() {
 
   const alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
-  const final = [];
+  const final = [];e
   const previousGuesses = [];
   
   console.clear();

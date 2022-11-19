@@ -174,7 +174,7 @@ function battleship() {
   while (shipSet.size > 0) {
     const promptAttack = () => readlineSync.question(
       "Enter a location to strike (ie 'A2')  ", {
-      limit: [grid],
+      limit: [gridTemplate],
       limitMessage: 'This is not a valid location. Please only enter coordinate on the playing board.'
       }
     );
@@ -280,6 +280,7 @@ function battleship() {
 
 }
 battleship();
+
 
 
 
