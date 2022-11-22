@@ -1,56 +1,78 @@
 var readlineSync = require("readline-sync");
 
 function battleship() {
-
-  const alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+  const alphabet = [
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "f",
+    "g",
+    "h",
+    "i",
+    "j",
+    "k",
+    "l",
+    "m",
+    "n",
+    "o",
+    "p",
+    "q",
+    "r",
+    "s",
+    "t",
+    "u",
+    "v",
+    "w",
+    "x",
+    "y",
+    "z",
+  ];
   const final = [];
   const finalVG = [];
   const finalTemplate = [];
   const previousGuesses = [];
-  
+
   console.clear();
   readlineSync.keyIn("Press any key to start the game", { limit: /./ });
   console.clear();
-  
-  // Make grid ------------------------------------------------------------------------------------------------------------------------------------------------------
-  
-  function makeGrid (number) {
+
+  function makeGrid(number) {
     const gridFunction = (number) => Array.from(Array(number).keys());
     const rowIndices = gridFunction(number);
     for (i = 0; i < number; i++) {
-      let letter = () => rowIndices.map((element) => alphabet[i] +  (element + 1));  
+      let letter = () =>
+        rowIndices.map((element) => alphabet[i] + (element + 1));
       final.push(letter());
     }
     return final;
   }
   const grid = makeGrid(10);
 
-  function makeTemplateGrid (number) {
+  function makeTemplateGrid(number) {
     const gridFunction = (number) => Array.from(Array(number).keys());
     const rowIndices = gridFunction(number);
     for (i = 0; i < number; i++) {
-      let letter = () => rowIndices.map((element) => alphabet[i] +  (element + 1));  
+      let letter = () =>
+        rowIndices.map((element) => alphabet[i] + (element + 1));
       finalTemplate.push(letter());
     }
     return finalTemplate;
   }
   const gridTemplate = makeTemplateGrid(10);
-  // console.log(gridTemplate);
 
-  function makeVG (number) {
+  function makeVG(number) {
     const gridFunction = (number) => Array.from(Array(number).keys());
     const rowIndices = gridFunction(number);
     for (i = 0; i < number; i++) {
-      let emptyArray = () => rowIndices.map((element) => ['  ']);  
+      let emptyArray = () => rowIndices.map((element) => ["  "]);
       finalVG.push(emptyArray());
     }
     return finalVG;
   }
   const vg = makeVG(10);
-  // console.log(vg);
-  
-  // Ship Class ------------------------------------------------------------------------------------------------------------------------------------------------------
-  
+
   class Ship {
     constructor(name, length, array, direction, xCoord, yCoord) {
       this.name = name;
@@ -60,16 +82,16 @@ function battleship() {
       this.xCoord = xCoord;
       this.yCoord = yCoord;
     }
-  
+
     shipDirection(element) {
       element.direction = Math.floor(Math.random() * 2);
     }
-  
+
     randomNumber(shipCoord) {
       shipCoord.xCoord = Math.floor(Math.random() * 10);
       shipCoord.yCoord = Math.floor(Math.random() * 10);
     }
-  
+
     makeShip(ship) {
       ship.array = [];
       if (ship.direction === 0) {
@@ -99,20 +121,18 @@ function battleship() {
         }
       }
     }
-  
+
     noOverlap(ship) {
       ship.makeShip(ship);
       if (!ship.array.includes(null) && ship.array != []) {
-        // console.log('yes');
         return ship;
       } else {
-        // console.log('TRY AGAIN!!!!!');
         ship.array = [];
         ship.randomNumber(ship);
         ship.noOverlap(ship);
       }
     }
-  
+
     splice(ship) {
       if (ship.direction === 0) {
         for (i = 0; i < ship.length; i++) {
@@ -134,55 +154,45 @@ function battleship() {
         }
       }
     }
-  
+
     path(ship) {
       ship.makeShip(ship);
       ship.noOverlap(ship);
       ship.splice(ship);
     }
-    
   }
-  
-  const carrierShip = new Ship('Carrier Ship', 5, []);
-  const cruiser = new Ship('Cruiser', 4, []);
-  const battleShip = new Ship('Battle Ship', 3, []);
-  const destroyer = new Ship('Destroyer', 3, []);
-  const tacticalShip = new Ship('Tactical Ship', 2, []);
-  
+
+  const carrierShip = new Ship("Carrier Ship", 5, []);
+  const cruiser = new Ship("Cruiser", 4, []);
+  const battleShip = new Ship("Battle Ship", 3, []);
+  const destroyer = new Ship("Destroyer", 3, []);
+  const tacticalShip = new Ship("Tactical Ship", 2, []);
+
   shipArray = [carrierShip, cruiser, battleShip, destroyer, tacticalShip];
-  
+
   shipArray.forEach((ship) => ship.shipDirection(ship));
   shipArray.forEach((element) => element.randomNumber(element));
   shipArray.forEach((element) => element.path(element));
-  
+
   console.clear();
-  
-  // console.table(grid);
-  
-  
-  // Attack sequence   ------------------------------------------------------------------------------------------------------------------------------------------------------
-  
-  // create ship Set
-  
+
   const shipSet = new Set();
   shipArray.forEach((element) => shipSet.add(element));
 
   let flatArray = [];
   shipArray.forEach((element) => flatArray.push(element.array));
   flatArray = flatArray.flat();
-  
+
   while (shipSet.size > 0) {
-    const promptAttack = () => readlineSync.question(
-      "Enter a location to strike (ie 'A2')  ", {
-      limit: [gridTemplate],
-      limitMessage: 'This is not a valid location. Please only enter coordinate on the playing board.'
-      }
-    );
-    
+    const promptAttack = () =>
+      readlineSync.question("Enter a location to strike (ie 'A2')  ", {
+        limit: [gridTemplate],
+        limitMessage:
+          "This is not a valid location. Please only enter coordinate on the playing board.",
+      });
 
     const attack = promptAttack();
     console.clear();
-    // console.table(grid);
 
     function row() {
       for (i = 0; i < gridTemplate.length; i++) {
@@ -193,13 +203,14 @@ function battleship() {
     }
     const rowCoord = row();
 
-    const findCoordIndex = () => gridTemplate[rowCoord].findIndex((element) => element === attack);
+    const findCoordIndex = () =>
+      gridTemplate[rowCoord].findIndex((element) => element === attack);
     const coordinateIndex = findCoordIndex();
-    
+
     if (flatArray.includes(attack)) {
-      vg[rowCoord].splice(coordinateIndex, 1, '🔥');
+      vg[rowCoord].splice(coordinateIndex, 1, "🔥");
       if (previousGuesses.includes(attack)) {
-        console.log('You have already picked this location!')
+        console.log("You have already picked this location!");
       } else {
         shipArray.forEach((element) => {
           if (element.array.includes(attack)) {
@@ -210,19 +221,24 @@ function battleship() {
               previousGuesses.push(attack);
               shipSet.delete(element);
               if (shipSet.size > 1) {
-                console.log(`You have sunk a battleship!!!! ${shipSet.size} ships remaining.`);
+                console.log(
+                  `You have sunk a battleship!!!! ${shipSet.size} ships remaining.`
+                );
               } else if (shipSet.size === 1) {
-                console.log(`You have sunk a battleship!!!! Only ${shipSet.size} ship left!`);
+                console.log(
+                  `You have sunk a battleship!!!! Only ${shipSet.size} ship left!`
+                );
               }
             }
-            const findCoordIndex = () => element.array.findIndex((index) => index === attack);
+            const findCoordIndex = () =>
+              element.array.findIndex((index) => index === attack);
             const coordinateIndex = findCoordIndex();
             element.array.splice(coordinateIndex, 1);
-          } 
+          }
         });
       }
     } else {
-      vg[rowCoord].splice(coordinateIndex, 1, '🟦');
+      vg[rowCoord].splice(coordinateIndex, 1, "🟦");
       if (previousGuesses.includes(attack)) {
         console.log(`
             You have already picked this location. Miss!
@@ -235,8 +251,7 @@ function battleship() {
       }
     }
 
-    let board =   
-  `
+    let board = `
       1    2    3    4    5    6    7    8    9    10 
     --------------------------------------------------- 
   a | ${vg[0][0]} | ${vg[0][1]} | ${vg[0][2]} | ${vg[0][3]} | ${vg[0][4]} | ${vg[0][5]} | ${vg[0][6]} | ${vg[0][7]} | ${vg[0][8]} | ${vg[0][9]} |
@@ -260,11 +275,11 @@ function battleship() {
   j | ${vg[9][0]} | ${vg[9][1]} | ${vg[9][2]} | ${vg[9][3]} | ${vg[9][4]} | ${vg[9][5]} | ${vg[9][6]} | ${vg[9][7]} | ${vg[9][8]} | ${vg[9][9]} |
     ---------------------------------------------------
   `;
-  
-  console.log(board);
+    console.log(board);
   }
 
-  const playAgain = () => readlineSync.keyInYN(`
+  const playAgain = () =>
+    readlineSync.keyInYN(`
   You have destroyed all battleships. Would you like to play again? 
   `);
   const restart = playAgain();
@@ -277,11 +292,6 @@ function battleship() {
       Thanks for playing!
       `);
   }
-
 }
+
 battleship();
-
-
-
-
-
