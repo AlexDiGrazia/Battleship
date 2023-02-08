@@ -149,6 +149,8 @@ function battleship() {
   shipArray.forEach((element) => element.randomNumber(element));
   shipArray.forEach((element) => element.path(element));
 
+  console.table(grid);
+
   const shipSet = new Set();
   shipArray.forEach((element) => shipSet.add(element));
 
@@ -231,3 +233,4 @@ function battleship() {
   }
 }
 battleship();
+
