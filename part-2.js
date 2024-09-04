@@ -143,7 +143,7 @@ function battleship() {
   const destroyer = new Ship("Destroyer", 3, []);
   const tacticalShip = new Ship("Tactical Ship", 2, []);
 
-  shipArray = [carrierShip, cruiser, battleShip, destroyer, tacticalShip];
+  const shipArray = [carrierShip, cruiser, battleShip, destroyer, tacticalShip];
 
   shipArray.forEach((ship) => ship.shipDirection(ship));
   shipArray.forEach((element) => element.randomNumber(element));
@@ -233,4 +233,3 @@ function battleship() {
   }
 }
 battleship();
-
